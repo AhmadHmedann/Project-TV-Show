@@ -2,13 +2,19 @@
 function setup() {
   const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
-  const Card = episodeCard(allEpisodes[0]);
-  document.body.append(Card);
+  
 }
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+
+   for(const episode of episodeList)
+   {
+    const card=episodeCard(episode)
+     rootElem.append(card);
+   }
+ 
+
 }
 //declare a function to create one card ,given episode obj
 
