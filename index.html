@@ -9,21 +9,32 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <main>
+      <div id="root"></div>
+      <template id="episode-Card">
+        <article class="episode">
+          <h3 class="episode-title"></h3>
+          <div class="episode-media">
+            <img class="episode-img" src="" alt="" />
+          </div>
+          <p class="episode-summary"></p>
+        </article>
+      </template>
+      <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+      <script src="episodes.js"></script>
 
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
+      <!-- Loads YOUR javascript code -->
+      <script src="script.js"></script>
+    </main>
 
-    <!-- Loads YOUR javascript code -->
-    <script src="script.js"></script>
-    <template id="episode-Card">
-      <article class="episode">
-        <h3 class="episode-title"></h3>
-        <div class="episode-Media">
-          <img class="episode-img" src="" alt="" />
-        </div>
-        <p class="episode-summary"></p>
-      </article>
-    </template>
+    <footer>
+      Data originally from
+      <a
+        href="https://www.tvmaze.com/"
+        target="_blank"
+        rel="noreferrer noopener"
+        >TVMaze.com</a
+      >.
+    </footer>
   </body>
 </html>
