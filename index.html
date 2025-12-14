@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,6 +10,14 @@
 
   <body>
     <main>
+      <div id="search-container">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search episodes by name or summary..."
+        />
+        <p id="episode-count"></p>
+      </div>
       <div id="root"></div>
       <template id="episode-Card">
         <article class="episode">
