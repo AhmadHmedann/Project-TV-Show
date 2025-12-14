@@ -1,11 +1,15 @@
-//You can edit ALL of the code here
 let allEpisodes = [];
+let isShowingSelected = false;
 
 function setup() {
   allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
   setupSearch();
+  setupEpisodeSelector();
+  setupShowAllButton();
 }
+
+/* Page Creation */
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
@@ -17,10 +21,6 @@ function makePageForEpisodes(episodeList) {
   });
 
   updateEpisodeCount(episodeList.length);
-}
-
-function formatEpisodeCode(season, number) {
-  return `S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}`;
 }
 
 function episodeCard({ name, image, season, number, summary }) {
@@ -38,6 +38,8 @@ function episodeCard({ name, image, season, number, summary }) {
   card.querySelector(".episode-summary").innerHTML = summary;
   return card;
 }
+
+/* Search bar */
 
 function setupSearch() {
   const searchInput = document.getElementById("search-input");
@@ -58,11 +60,71 @@ function handleSearch(event) {
     matchesSearch(episode, searchTerm)
   );
   makePageForEpisodes(filteredEpisodes);
+  isShowingSelected = false;
+  document.getElementById("show-all-btn").style.display = "none";
+  document.getElementById("episode-select").value = "";
 }
 
 function updateEpisodeCount(count) {
   const countElem = document.getElementById("episode-count");
   countElem.textContent = `Displaying ${count} / ${allEpisodes.length} episodes`;
+}
+
+/* Episode Select Dropdown */
+
+function setupEpisodeSelector() {
+  const select = document.getElementById("episode-select");
+
+  allEpisodes.forEach((episode) => {
+    const option = document.createElement("option");
+    const episodeCode = formatEpisodeCode(episode.season, episode.number);
+    option.value = episode.id;
+    option.textContent = `${episodeCode} - ${episode.name}`;
+    select.append(option);
+  });
+
+  select.addEventListener("change", handleEpisodeSelect);
+}
+
+function handleEpisodeSelect(event) {
+  const selectedId = event.target.value;
+
+  if (!selectedId) {
+    // Reset
+    showAllEpisodes();
+    return;
+  }
+
+  const selectedEpisode = allEpisodes.find(
+    (ep) => ep.id === parseInt(selectedId)
+  );
+
+  if (selectedEpisode) {
+    makePageForEpisodes([selectedEpisode]); // Destructure single item
+    isShowingSelected = true;
+    document.getElementById("show-all-btn").style.display = "block";
+  }
+}
+
+/* Show All Episodes Button */
+
+function showAllEpisodes() {
+  makePageForEpisodes(allEpisodes);
+  isShowingSelected = false;
+  document.getElementById("show-all-btn").style.display = "none";
+  document.getElementById("episode-select").value = "";
+  document.getElementById("search-input").value = "";
+}
+
+function setupShowAllButton() {
+  const showAllBtn = document.getElementById("show-all-btn");
+  showAllBtn.addEventListener("click", showAllEpisodes);
+}
+
+/* Helper Functions */
+
+function formatEpisodeCode(season, number) {
+  return `S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}`;
 }
 
 window.onload = setup;
