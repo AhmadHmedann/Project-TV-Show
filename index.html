@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,6 +10,22 @@
 
   <body>
     <main>
+      <div id="search-container">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search episodes by name or summary..."
+        />
+        <div id="episode-selector-container">
+          <select id="episode-select">
+            <option value="">Jump to an episode...</option>
+          </select>
+          <button id="show-all-btn" style="display: none">
+            Show All Episodes
+          </button>
+        </div>
+        <p id="episode-count"></p>
+      </div>
       <div id="root"></div>
       <template id="episode-Card">
         <article class="episode">
