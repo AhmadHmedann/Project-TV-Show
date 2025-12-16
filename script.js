@@ -1,6 +1,6 @@
-//                                           level-100 refactoring  
-//change the template id name to "episode-card-template"
-// in rendering process use map instead of forEach  ( to create a new array [card1,.....cardN] without touch the Dom )
+//                                           level-100 refactoring
+//change the template id  to "episode-card-template"
+// in rendering process(makePageForEpisodes) use map instead of forEach  ( to create a new array [card1,.....cardN] without touch the Dom )
 let allEpisodes = [];
 let isShowingSelected = false;
 
@@ -17,17 +17,13 @@ function setup() {
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
   rootElem.innerHTML = ""; // Clear previous episodes
-
-  episodeList.forEach((episode) => {
-    const cardElem = episodeCard(episode);
-    rootElem.append(cardElem);
-  });
-
+  const episodeCards = episodeList.map(episodeCard);
+  rootElem.append(...episodeCards);
   updateEpisodeCount(episodeList.length);
 }
 
 function episodeCard({ name, image, season, number, summary }) {
-  const template = document.getElementById("episode-Card");
+  const template = document.getElementById("episode-card-template");
   const card = template.content.cloneNode(true);
 
   const episodeCode = formatEpisodeCode(season, number);
