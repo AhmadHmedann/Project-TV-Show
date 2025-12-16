@@ -1,3 +1,6 @@
+//                                           level-100 refactoring  
+//change the template id name to "episode-card-template"
+// in rendering process use map instead of forEach  ( to create a new array [card1,.....cardN] without touch the Dom )
 let allEpisodes = [];
 let isShowingSelected = false;
 
@@ -124,7 +127,10 @@ function setupShowAllButton() {
 /* Helper Functions */
 
 function formatEpisodeCode(season, number) {
-  return `S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}`;
+  return `S${String(season).padStart(2, "0")}E${String(number).padStart(
+    2,
+    "0"
+  )}`;
 }
 
 window.onload = setup;
