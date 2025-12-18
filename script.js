@@ -63,7 +63,7 @@ function matchesSearch(name, summary, searchTerm) {
 function handleSearch(event) {
    state.searchTerm = event.target.value;
   const filteredEpisodes = state.allEpisodes.filter((episode) =>
-    matchesSearch(episode, state.searchTerm)
+    matchesSearch(episode.name,episode.summary, state.searchTerm)
   );
   makePageForEpisodes(filteredEpisodes);
   // isShowingSelected = false;
