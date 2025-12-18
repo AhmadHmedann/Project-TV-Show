@@ -52,11 +52,11 @@ function setupSearch() {
   searchInput.addEventListener("input", handleSearch);
 }
 
-function matchesSearch(episode, searchTerm) {
-  const lowerSearchTerm = searchTerm.toLowerCase();
+function matchesSearch(name, summary, searchTerm) {
+  const term = searchTerm.toLowerCase();
   return (
-    episode.name.toLowerCase().includes(lowerSearchTerm) ||
-    episode.summary.toLowerCase().includes(lowerSearchTerm)
+    (name && name.toLowerCase().includes(term)) ||
+    (summary && summary.toLowerCase().includes(term)) ///check after filter
   );
 }
 
@@ -66,9 +66,9 @@ function handleSearch(event) {
     matchesSearch(episode, state.searchTerm)
   );
   makePageForEpisodes(filteredEpisodes);
-  isShowingSelected = false;
-  document.getElementById("show-all-btn").style.display = "none";
-  document.getElementById("episode-select").value = "";
+  // isShowingSelected = false;
+  // document.getElementById("show-all-btn").style.display = "none";
+  // document.getElementById("episode-select").value = "";
 }
 
 function updateEpisodeCount(count) {
