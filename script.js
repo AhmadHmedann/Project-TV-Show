@@ -1,12 +1,17 @@
-//                                           level-100 refactoring
-//change the template id  to "episode-card-template"
-// in rendering process(makePageForEpisodes) use map instead of forEach  ( to create a new array [card1,.....cardN] without touch the Dom )
+                                     // level-100 refactoring
+// Change the template id to "episode-card-template"
+// In the rendering process (makePageForEpisodes), use map instead of forEach
+// to create a new array [card1, ..., cardN] without touching the DOM
+
 
 //                                            level-200 refactoring
-// use state object for global variable (allEpisode && searchTerm)
+// use a state object for global variables (allEpisode && searchTerm)
 
+// Episode selector
+// I removed setupShowAllButton() because I use
+// selectedElement.scrollIntoView({ behavior: "smooth", block: "start" });
+// I created an id for each episode and used the same id as the option value
 
-let isShowingSelected = false;
 const state = {
   allEpisodes: getAllEpisodes(),
   searchTerm: "",
@@ -16,7 +21,6 @@ function setup() {
   makePageForEpisodes(state.allEpisodes);
   setupSearch();
   setupEpisodeSelector();
-  setupShowAllButton();
 }
 
 /* Page Creation */
@@ -29,10 +33,11 @@ function makePageForEpisodes(episodeList) {
   updateEpisodeCount(episodeList.length);
 }
 
-function episodeCard({ name, image, season, number, summary }) {
+function episodeCard({ name, image, season, number, summary, id }) {
   const template = document.getElementById("episode-card-template");
   const card = template.content.cloneNode(true);
-
+  const root = card.firstElementChild; //add an id for each episode for selector function
+  root.id = String(id);
   const episodeCode = formatEpisodeCode(season, number);
 
   card.querySelector(".episode-title").textContent = `${name}-${episodeCode}`;
@@ -61,14 +66,11 @@ function matchesSearch(name, summary, searchTerm) {
 }
 
 function handleSearch(event) {
-   state.searchTerm = event.target.value;
+  state.searchTerm = event.target.value;
   const filteredEpisodes = state.allEpisodes.filter((episode) =>
-    matchesSearch(episode.name,episode.summary, state.searchTerm)
+    matchesSearch(episode.name, episode.summary, state.searchTerm)
   );
   makePageForEpisodes(filteredEpisodes);
-  // isShowingSelected = false;
-  // document.getElementById("show-all-btn").style.display = "none";
-  // document.getElementById("episode-select").value = "";
 }
 
 function updateEpisodeCount(count) {
@@ -84,7 +86,7 @@ function setupEpisodeSelector() {
   state.allEpisodes.forEach((episode) => {
     const option = document.createElement("option");
     const episodeCode = formatEpisodeCode(episode.season, episode.number);
-    option.value = episode.id;
+    option.value = String(episode.id); //use the episode id as the option value
     option.textContent = `${episodeCode} - ${episode.name}`;
     select.append(option);
   });
@@ -96,37 +98,12 @@ function handleEpisodeSelect(event) {
   const selectedId = event.target.value;
 
   if (!selectedId) {
-    // Reset
-    showAllEpisodes();
     return;
   }
-
-  const selectedEpisode = state.allEpisodes.find(
-    (ep) => ep.id === parseInt(selectedId)
-  );
-
-  if (selectedEpisode) {
-    makePageForEpisodes([selectedEpisode]); // Destructure single item
-    isShowingSelected = true;
-    document.getElementById("show-all-btn").style.display = "block";
-  }
+  const selectedElement = document.getElementById(selectedId);
+  if (!selectedElement) return;
+  selectedElement.scrollIntoView({ behavior: "smooth", block: "start" });
 }
-
-/* Show All Episodes Button */
-
-function showAllEpisodes() {
-  makePageForEpisodes(state.allEpisodes);
-  isShowingSelected = false;
-  document.getElementById("show-all-btn").style.display = "none";
-  document.getElementById("episode-select").value = "";
-  document.getElementById("search-input").value = "";
-}
-
-function setupShowAllButton() {
-  const showAllBtn = document.getElementById("show-all-btn");
-  showAllBtn.addEventListener("click", showAllEpisodes);
-}
-
 /* Helper Functions */
 
 function formatEpisodeCode(season, number) {
