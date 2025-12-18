@@ -3,14 +3,17 @@
 // in rendering process(makePageForEpisodes) use map instead of forEach  ( to create a new array [card1,.....cardN] without touch the Dom )
 
 //                                            level-200 refactoring
-// use state for global variable
+// use state object for global variable (allEpisode && searchTerm)
 
-let allEpisodes = [];
+
 let isShowingSelected = false;
+const state = {
+  allEpisodes: getAllEpisodes(),
+  searchTerm: "",
+};
 
 function setup() {
-  allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
+  makePageForEpisodes(state.allEpisodes);
   setupSearch();
   setupEpisodeSelector();
   setupShowAllButton();
@@ -58,9 +61,9 @@ function matchesSearch(episode, searchTerm) {
 }
 
 function handleSearch(event) {
-  const searchTerm = event.target.value;
-  const filteredEpisodes = allEpisodes.filter((episode) =>
-    matchesSearch(episode, searchTerm)
+   state.searchTerm = event.target.value;
+  const filteredEpisodes = state.allEpisodes.filter((episode) =>
+    matchesSearch(episode, state.searchTerm)
   );
   makePageForEpisodes(filteredEpisodes);
   isShowingSelected = false;
@@ -70,7 +73,7 @@ function handleSearch(event) {
 
 function updateEpisodeCount(count) {
   const countElem = document.getElementById("episode-count");
-  countElem.textContent = `Displaying ${count} / ${allEpisodes.length} episodes`;
+  countElem.textContent = `Displaying ${count} / ${state.allEpisodes.length} episodes`;
 }
 
 /* Episode Select Dropdown */
@@ -78,7 +81,7 @@ function updateEpisodeCount(count) {
 function setupEpisodeSelector() {
   const select = document.getElementById("episode-select");
 
-  allEpisodes.forEach((episode) => {
+  state.allEpisodes.forEach((episode) => {
     const option = document.createElement("option");
     const episodeCode = formatEpisodeCode(episode.season, episode.number);
     option.value = episode.id;
@@ -98,7 +101,7 @@ function handleEpisodeSelect(event) {
     return;
   }
 
-  const selectedEpisode = allEpisodes.find(
+  const selectedEpisode = state.allEpisodes.find(
     (ep) => ep.id === parseInt(selectedId)
   );
 
@@ -112,7 +115,7 @@ function handleEpisodeSelect(event) {
 /* Show All Episodes Button */
 
 function showAllEpisodes() {
-  makePageForEpisodes(allEpisodes);
+  makePageForEpisodes(state.allEpisodes);
   isShowingSelected = false;
   document.getElementById("show-all-btn").style.display = "none";
   document.getElementById("episode-select").value = "";
