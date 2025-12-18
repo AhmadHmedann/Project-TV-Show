@@ -1,6 +1,10 @@
 //                                           level-100 refactoring
 //change the template id  to "episode-card-template"
 // in rendering process(makePageForEpisodes) use map instead of forEach  ( to create a new array [card1,.....cardN] without touch the Dom )
+
+//                                            level-200 refactoring
+// use state for global variable
+
 let allEpisodes = [];
 let isShowingSelected = false;
 
