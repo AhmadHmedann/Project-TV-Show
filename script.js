@@ -14,9 +14,22 @@
  
 //level 300 coming soon
 const state = {
-  allEpisodes: getAllEpisodes(),
+  allEpisodes: [],
   searchTerm: "",
 };
+
+// fetch the data 
+function fetchAllEpisodes(){
+  return fetch("https://api.tvmaze.com/shows/82/episodes").then((res)=>res.json());
+  }
+
+// run setup function after data is ready
+window.addEventListener("load",()=>{
+  fetchAllEpisodes().then((episodes)=>{
+    state.allEpisodes=episodes;
+    setup();
+  })
+})
 
 function setup() {
   makePageForEpisodes(state.allEpisodes);
@@ -83,7 +96,7 @@ function updateEpisodeCount(count) {
 
 function setupEpisodeSelector() {
   const select = document.getElementById("episode-select");
-
+  select.innerHTML = '<option value="">Jump to an episode...</option>';
   state.allEpisodes.forEach((episode) => {
     const option = document.createElement("option");
     const episodeCode = formatEpisodeCode(episode.season, episode.number);
@@ -113,5 +126,3 @@ function formatEpisodeCode(season, number) {
     "0"
   )}`;
 }
-
-window.onload = setup;
