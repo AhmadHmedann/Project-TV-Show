@@ -9,7 +9,38 @@
   </head>
 
   <body>
+    <header>
+      <a href="" id="home"></a>
+    </header>
     <main>
+      <section id="show-view">
+        <div id="show-root" class="shows-container"></div>
+
+        <template id="show-card-template">
+          <article class="show-card">
+            <div class="show-media">
+              <img src="" alt="" class="show-img">
+            </div>
+            <div class="show-body">
+              <h2 class="show-title">
+                <a href="" class="show-link"></a>
+              </h2>
+              <div class="show-summary"></div>
+              <div class="show-details">
+                <p><strong>Rated:</strong><span class="show-rating"></span></p>
+                 <p><strong>Genres:</strong><span class="show-genres"></span></p>
+                  <p><strong>Status:</strong><span class="show-status"></span></p>
+                   <p><strong>Runtime:</strong><span class="show-runtime"></span></p>
+              </div>
+            </div>
+          </article>
+        </template>
+      </section>
+      
+
+
+
+
       <div id="search-container">
         <label for="search-input" class="sr-only" style="display: none"
           >Search episodes</label
