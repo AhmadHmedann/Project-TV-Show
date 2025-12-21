@@ -63,7 +63,8 @@ window.addEventListener("load", async () => {
 function setup() {
   setupSearch();
   setupEpisodeSelector();
-  setupShowsSelector();
+  setupShowsSelector(); 
+  setupHomeButton();
    makePageForShows(state.allShows);
 }
 
@@ -302,4 +303,19 @@ async function loadShowEpisodes(showId)
 function showEpisodeView(){
   document.getElementById("show-view").hidden =true;
   document.getElementById("episode-view").hidden=false;
+}
+ 
+//home Page
+
+function showShowsView() {
+  document.getElementById("show-view").hidden = false;
+  document.getElementById("episode-view").hidden = true;
+}
+
+function setupHomeButton(){
+  document.getElementById("home").textContent = "← Back to shows";
+  document.getElementById("home").addEventListener("click", (e) => {
+    e.preventDefault();
+    showShowsView();
+  });
 }
