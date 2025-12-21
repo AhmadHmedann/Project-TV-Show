@@ -313,7 +313,7 @@ function showShowsView() {
 }
 
 function setupHomeButton(){
-  document.getElementById("home").textContent = "← Back to shows";
+  document.getElementById("home").textContent = "Home";
   document.getElementById("home").addEventListener("click", (e) => {
     e.preventDefault();
     showShowsView();
