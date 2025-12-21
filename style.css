@@ -1,70 +1,226 @@
-* {
+
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f5f5f5;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+  background: #f6f7f9;
+  color: #222;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration: underline;
+}
+
+/* =====================
+   Accessibility
+===================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =====================
+   Header
+===================== */
+
+header {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 16px;
+}
+
+#home {
+  font-weight: 600;
+}
+
+/* =====================
+   Status
+===================== */
+
+#status {
+  margin: 12px 16px;
+  font-weight: 600;
+}
+
+/* =====================
+   SHOWS VIEW
+===================== */
+
+.shows-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 16px;
+}
+
+/* wider screens */
+@media (min-width: 900px) {
+  .shows-container {
+    grid-template-columns: repeat(auto-fill, minmax(700px, 1fr));
+  }
+}
+
+/* =====================
+   Show Card
+===================== */
+
+.show-card {
+  display: grid;
+  gap: 16px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e2e2;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 700px) {
+  .show-card {
+    grid-template-columns: 210px 1fr;
+    align-items: start;
+  }
+}
+
+.show-media {
+  display: flex;
+  justify-content: center;
+}
+
+.show-img {
+  border-radius: 8px;
+  width: 210px;
+}
+
+/* =====================
+   Show Content
+===================== */
+
+.show-title {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.show-summary {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.show-summary p {
+  margin-top: 0;
+}
+
+.show-details {
+  margin-top: 12px;
+  padding: 12px;
+  background: #fafafa;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  display: grid;
+  gap: 6px;
+}
+
+.show-details p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* =====================
+   EPISODES VIEW
+===================== */
+
+#episode-view {
+  padding: 0 16px 24px;
 }
 
 #search-container {
-  max-width: 1200px;
-  margin: 20px auto 10px;
-  padding: 0 10px;
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
 }
 
-#search-input {
-  width: 100%;
-  padding: 12px 16px;
+input[type="text"],
+select {
+  padding: 10px 12px;
   font-size: 16px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  transition: border-color 0.3s;
-}
-
-#search-input:focus {
-  border-color: #4a90e2;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  max-width: 500px;
 }
 
 #episode-count {
-  margin: 10px 0 0;
   font-size: 14px;
-  color: #666;
+  opacity: 0.8;
 }
 
+/* =====================
+   Episode Cards
+===================== */
+
 #root {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 10px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  gap: 16px;
 }
+
 .episode {
   background: #fff;
   border-radius: 10px;
-  padding: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e2e2;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+
+.episode-title {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
 .episode-media {
-  text-align: center;
   margin-bottom: 10px;
 }
+
 .episode-img {
-  width: 100%;
-  max-width: 240px;
-  height: auto;
-  border-radius: 4px;
+  border-radius: 8px;
+  max-width: 360px;
 }
-.episode-summary {
-  font-size: 12px;
-  line-height: 1.5;
-  color: #555;
+
+.episode-summary p {
+  margin-top: 0;
 }
+
+/* =====================
+   Footer
+===================== */
+
 footer {
   text-align: center;
-  font-size: 12px;
-  margin: 20px 0;
-  color: #666;
+  padding: 16px;
+  font-size: 14px;
+  border-top: 1px solid #ddd;
+  background: #fff;
 }
