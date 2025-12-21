@@ -258,3 +258,48 @@ function makePageForShows(showList) {
   rootElem.append(...showCards);
  
 }
+
+//level 500 plan part 2
+//when the user clicks a show title 
+// load that shows episodes 
+// display the episodes
+//  Hide the show view show the episode view 
+document.getElementById("shows-root").addEventListener("click",handleShowClick);
+function handleShowClick(event){
+  const link = event.target.closest(".show-link");
+  if (!link) return;
+  event.preventDefault();
+  const showId= Number(link.dataset.showId)
+  loadShowEpisodes(showId);
+}
+async function loadShowEpisodes(showId)
+{
+  const statusElm = document.getElementById("status");
+  statusElm.textContent = "Loading episodes...";
+  try {
+    let episodes;
+    if (state.episodeByShowId.has(showId)) {
+      episodes = state.episodeByShowId.get(showId);
+    } else {
+      episodes = await fetchEpisodesForShow(showId);
+      state.episodeByShowId.set(showId, episodes);
+    }
+    state.allEpisodes = episodes;
+
+    // clean the search
+    state.searchTerm = "";
+    document.getElementById("search-input").value = "";
+    makePageForEpisodes(state.allEpisodes);
+    populateEpisodeSelector();
+    // document.getElementById("episode-select").value = "";
+    statusElm.textContent = "";
+    showEpisodeView();
+  } catch {
+    statusElm.textContent =
+      "Sorry - failed to load episodes. Please refresh the page.";
+  }
+}
+function showEpisodeView(){
+  document.getElementById("show-view").hidden =true;
+  document.getElementById("episode-view").hidden=false;
+}
