@@ -64,7 +64,7 @@ function setup() {
   setupSearch();
   setupEpisodeSelector();
   setupShowsSelector();
-  makePageForEpisodes(state.allEpisodes);
+   makePageForShows(state.allShows);
 }
 
 /* Page Creation */
@@ -218,7 +218,7 @@ async function handleShowsSelector(event) {
 
 // create show card
 
-function ShowCard({
+function showCard({
   image,
   name,
   summary,
@@ -228,21 +228,33 @@ function ShowCard({
   status,
   id,
 }) {
-  const template = getElementById("show-card-template");
+  const template =document.getElementById("show-card-template");
   const showCard = template.content.cloneNode(true);
   const img = showCard.querySelector(".show-img");
-  img.src = image?.medium || "";
-  img.alt = name || "";
-  showCard.querySelector(".show-title").textContent = name;
-  const link =  showCard.querySelector("show-link");
+   if (image?.medium) {
+     img.src = image.medium;
+     img.alt = name ?? "";
+   } else {
+     img.src = "https://via.placeholder.com/210x295?text=No+Image";
+     img.alt ="No image available"
+   }
+  const link =  showCard.querySelector(".show-link");
   link.textContent =name;
   link.dataset.showId=id;
   showCard.querySelector(".show-summary").innerHTML = summary;
 
-  showCard.querySelector(".show-rating").textContent = rating?.average ?? "";
-  showCard.querySelector(".show-genres").textContent = genres?.join(" | ") ||"";
-  showCard.querySelector(".show-status").textContent = status;
-  showCard.querySelector(".show-runtime").textContent = runtime;
+  showCard.querySelector(".show-rating").textContent = rating?.average ?? "N/A";
+  showCard.querySelector(".show-genres").textContent = genres?.join(" | ") ||"N/A";
+  showCard.querySelector(".show-status").textContent = status ?? "N/A";
+  showCard.querySelector(".show-runtime").textContent = runtime ?? "N/A";
 
   return showCard;
+}
+
+function makePageForShows(showList) {
+  const rootElem = document.getElementById("shows-root");
+  rootElem.innerHTML = ""; // Clear previous shows
+  const showCards = showList.map(showCard);
+  rootElem.append(...showCards);
+ 
 }

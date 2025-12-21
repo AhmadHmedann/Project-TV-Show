@@ -14,7 +14,7 @@
     </header>
     <main>
       <section id="show-view">
-        <div id="show-root" class="shows-container"></div>
+        <div id="shows-root" class="shows-container"></div>
 
         <template id="show-card-template">
           <article class="show-card">
@@ -23,7 +23,7 @@
             </div>
             <div class="show-body">
               <h2 class="show-title">
-                <a href="" class="show-link"></a>
+                <a href="" class="show-link" data-show-id=""></a>
               </h2>
               <div class="show-summary"></div>
               <div class="show-details">
@@ -39,7 +39,7 @@
       
 
 
-    <section id="episode-view">
+    <section id="episode-view" hidden>
       
       <div id="search-container">
         <label for="search-input" class="sr-only" style="display: none"
