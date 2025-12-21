@@ -9,9 +9,45 @@
   </head>
 
   <body>
+    <header>
+      <a href="" id="home"></a>
+    </header>
     <main>
+      <section id="show-view">
+        <div id="show-search-container">
+          <label for="show-search">Search shows</label>
+          <input type="text" id="show-search" >
+          <p id="show-count"></p>
+        </div>
+        <div id="shows-root" class="shows-container"></div>
+
+        <template id="show-card-template">
+          <article class="show-card">
+            <div class="show-media">
+              <img src="" alt="" class="show-img">
+            </div>
+            <div class="show-body">
+              <h2 class="show-title">
+                <a href="" class="show-link" data-show-id=""></a>
+              </h2>
+              <div class="show-summary"></div>
+              <div class="show-details">
+                <p><strong>Rated:</strong><span class="show-rating"></span></p>
+                 <p><strong>Genres:</strong><span class="show-genres"></span></p>
+                  <p><strong>Status:</strong><span class="show-status"></span></p>
+                   <p><strong>Runtime:</strong><span class="show-runtime"></span></p>
+              </div>
+            </div>
+          </article>
+        </template>
+      </section>
+      
+
+
+    <section id="episode-view" hidden>
+      
       <div id="search-container">
-        <label for="search-input" class="sr-only" style="display: none"
+        <label for="search-input" class="sr-only"
           >Search episodes</label
         >
         <input
@@ -19,7 +55,7 @@
           id="search-input"
           placeholder="Search episodes by name or summary..."
         />
-
+      
         <div id="episode-selector-container">
           <select id="episode-select">
             <option value="">Jump to an episode...</option>
@@ -27,6 +63,7 @@
         </div>
         <p id="episode-count"></p>
       </div>
+      <p id="status"></p>
       <div id="root"></div>
       <template id="episode-card-template">
         <article class="episode">
@@ -37,8 +74,7 @@
           <p class="episode-summary"></p>
         </article>
       </template>
-      <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-      <script src="episodes.js"></script>
+    </section>
 
       <!-- Loads YOUR javascript code -->
       <script src="script.js"></script>
