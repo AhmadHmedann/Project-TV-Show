@@ -46,7 +46,7 @@ window.addEventListener("load", async () => {
       a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
 
-console.log(state.allShows[0]);
+    console.log(state.allShows[0]);
     state.episodeByShowId.set(82, episodes);
     state.allEpisodes = episodes;
 
@@ -209,11 +209,40 @@ async function handleShowsSelector(event) {
   }
 }
 
-// level 500 plan 
-//prepare the HTML structure for the view section 
+// level 500 plan
+//prepare the HTML structure for the view section
 // showCard function for one card
 //showCards function for all cards
-//note I must fetch and store the allShows array in state.allShows before 
+//note I must fetch and store the allShows array in state.allShows before
 //hide the episodes view and display the shows view
 
+// create show card
 
+function ShowCard({
+  image,
+  name,
+  summary,
+  genres,
+  runtime,
+  rating,
+  status,
+  id,
+}) {
+  const template = getElementById("show-card-template");
+  const showCard = template.content.cloneNode(true);
+  const img = showCard.querySelector(".show-img");
+  img.src = image?.medium || "";
+  img.alt = name || "";
+  showCard.querySelector(".show-title").textContent = name;
+  const link =  showCard.querySelector("show-link");
+  link.textContent =name;
+  link.dataset.showId=id;
+  showCard.querySelector(".show-summary").innerHTML = summary;
+
+  showCard.querySelector(".show-rating").textContent = rating?.average ?? "";
+  showCard.querySelector(".show-genres").textContent = genres?.join(" | ") ||"";
+  showCard.querySelector(".show-status").textContent = status;
+  showCard.querySelector(".show-runtime").textContent = runtime;
+
+  return showCard;
+}
