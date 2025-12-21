@@ -27,17 +27,10 @@ window.addEventListener("load", async () => {
   statusElm.textContent = "Loading...";
 
   try {
-    const [shows, episodes] = await Promise.all([
-      fetchAllShows(),
-      fetchEpisodesForShow(82),
-    ]);
-    state.allShows = shows.sort((a, b) =>
+    const shows = await fetchAllShows();
+        state.allShows = shows.sort((a, b) =>
       a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
-
-    state.episodeByShowId.set(82, episodes);
-    state.allEpisodes = episodes;
-
     statusElm.textContent = "";
     setup();
   } catch {
