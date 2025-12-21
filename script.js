@@ -1,4 +1,3 @@
-
 const state = {
   allShows: [],
   allEpisodes: [],
@@ -28,7 +27,7 @@ window.addEventListener("load", async () => {
 
   try {
     const shows = await fetchAllShows();
-        state.allShows = shows.sort((a, b) =>
+    state.allShows = shows.sort((a, b) =>
       a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
     statusElm.textContent = "";
@@ -43,8 +42,9 @@ window.addEventListener("load", async () => {
 
 function setup() {
   setupSearch();
-  setupShowSearch()
+  setupShowSearch();
   setupEpisodeSelector();
+  setupShowsSelector();
   setupHomeButton();
   makePageForShows(state.allShows);
 }
@@ -143,6 +143,45 @@ function formatEpisodeCode(season, number) {
 }
 
 /* Shows Select Dropdown */
+function setupShowsSelector() {
+  const showsSelector = document.getElementById("show-selector");
+  showsSelector.innerHTML = '<option value="">Select a show...</option>';
+  state.allShows.forEach((show) => {
+    const option = document.createElement("option");
+    option.value = show.id;
+    option.textContent = `${show.name}`;
+    showsSelector.append(option);
+  });
+  showsSelector.addEventListener("change", handleShowsSelector);
+}
+async function handleShowsSelector(event) {
+  const showId = Number(event.target.value);
+  if (!showId) return;
+  const statusElm = document.getElementById("status");
+  statusElm.textContent = "Loading episodes...";
+  try {
+    let episodes;
+    if (state.episodeByShowId.has(showId)) {
+      episodes = state.episodeByShowId.get(showId);
+    } else {
+      episodes = await fetchEpisodesForShow(showId);
+      state.episodeByShowId.set(showId, episodes);
+    }
+    state.allEpisodes = episodes;
+
+    // clean the search
+    state.searchTerm = "";
+    document.getElementById("search-input").value = "";
+    makePageForEpisodes(state.allEpisodes);
+    populateEpisodeSelector();
+    document.getElementById("episode-select").value = "";
+    statusElm.textContent = "";
+    showEpisodeView();
+  } catch {
+    statusElm.textContent =
+      "Sorry - failed to load episodes. Please refresh the page.";
+  }
+}
 
 // create show card
 
@@ -186,7 +225,6 @@ function makePageForShows(showList) {
   const showCards = showList.map(showCard);
   rootElem.append(...showCards);
 }
-
 
 document
   .getElementById("shows-root")
@@ -250,24 +288,24 @@ function matchesShowSearch(show, searchTerm) {
   const name = show.name.toLowerCase();
   const genres = show.genres.join(" ").toLowerCase();
   const summary = show.summary.toLowerCase();
-  return name.includes(term) || genres.includes (term) ||summary.includes(term)
+  return name.includes(term) || genres.includes(term) || summary.includes(term);
 }
 
-function setupShowSearch(){
-  const input =document.getElementById("show-search");
-  input.addEventListener("input", handleShowSearch)
+function setupShowSearch() {
+  const input = document.getElementById("show-search");
+  input.addEventListener("input", handleShowSearch);
 }
 
-function handleShowSearch(event){
-  state.showSearchTerm=event.target.value;
-  const filteredShows =state.allShows.filter((show)=>
-    matchesShowSearch(show,state.showSearchTerm)
+function handleShowSearch(event) {
+  state.showSearchTerm = event.target.value;
+  const filteredShows = state.allShows.filter((show) =>
+    matchesShowSearch(show, state.showSearchTerm)
   );
   makePageForShows(filteredShows);
   updateShowCount(filteredShows.length);
 }
 
-function updateShowCount(count){
+function updateShowCount(count) {
   const countElm = document.getElementById("show-count");
-  countElm.textContent=`found ${count}  shows`
+  countElm.textContent = `found ${count}  shows`;
 }
