@@ -35,7 +35,7 @@ const fetchEpisodesForShow = async (showId) => {
 
 window.addEventListener("load", async () => {
   const statusElm = document.getElementById("status");
-  statusElm.textContent = "Loading  ...";
+  statusElm.textContent = "Loading...";
 
   try {
     const [shows, episodes] = await Promise.all([
@@ -45,6 +45,8 @@ window.addEventListener("load", async () => {
     state.allShows = shows.sort((a, b) =>
       a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
+
+console.log(state.allShows[0]);
     state.episodeByShowId.set(82, episodes);
     state.allEpisodes = episodes;
 
@@ -183,7 +185,7 @@ async function handleShowsSelector(event) {
   const showId = Number(event.target.value);
   if (!showId) return;
   const statusElm = document.getElementById("status");
-  statusElm.textContent = "Loading episodes ...";
+  statusElm.textContent = "Loading episodes...";
   try {
     let episodes;
     if (state.episodeByShowId.has(showId)) {
@@ -206,4 +208,12 @@ async function handleShowsSelector(event) {
       "Sorry - failed to load episodes. Please refresh the page.";
   }
 }
+
+// level 500 plan 
+//prepare the HTML structure for the view section 
+// showCard function for one card
+//showCards function for all cards
+//note I must fetch and store the allShows array in state.allShows before 
+//hide the episodes view and display the shows view
+
 
