@@ -1,15 +1,3 @@
-// level-100 refactoring
-// Change the template id to "episode-card-template"
-// In the rendering process (makePageForEpisodes), use map instead of forEach
-// to create a new array [card1, ..., cardN] without touching the DOM
-
-//                                            level-200 refactoring
-// use a state object for global variables (allEpisodes && searchTerm)
-
-// Episode selector
-// I removed setupShowAllButton() because I use
-// selectedElement.scrollIntoView({ behavior: "smooth", block: "start" });
-// I created an id for each episode and used the same id as the option value
 
 const state = {
   allShows: [],
@@ -47,7 +35,6 @@ window.addEventListener("load", async () => {
       a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
 
-    console.log(state.allShows[0]);
     state.episodeByShowId.set(82, episodes);
     state.allEpisodes = episodes;
 
@@ -65,7 +52,6 @@ function setup() {
   setupSearch();
   setupShowSearch()
   setupEpisodeSelector();
-  setupShowsSelector();
   setupHomeButton();
   makePageForShows(state.allShows);
 }
@@ -163,61 +149,7 @@ function formatEpisodeCode(season, number) {
   )}`;
 }
 
-// level-400 plan
-//https://api.tvmaze.com/shows/show.id/show.name
-// add select element to the HTML file
-//I need a why to fetch all show and store them and state object
-//I need a why so sort show in alphabetical order
-//add the shows to select as options
-//take the episodes of the selected show and store them in state.allEpisodes
-//make suer all feature works
-
 /* Shows Select Dropdown */
-function setupShowsSelector() {
-  const showsSelector = document.getElementById("show-selector");
-  showsSelector.innerHTML = '<option value="">Select a show...</option>';
-  state.allShows.forEach((show) => {
-    const option = document.createElement("option");
-    option.value = show.id;
-    option.textContent = `${show.name}`;
-    showsSelector.append(option);
-  });
-  showsSelector.addEventListener("change", handleShowsSelector);
-}
-async function handleShowsSelector(event) {
-  const showId = Number(event.target.value);
-  if (!showId) return;
-  const statusElm = document.getElementById("status");
-  statusElm.textContent = "Loading episodes...";
-  try {
-    let episodes;
-    if (state.episodeByShowId.has(showId)) {
-      episodes = state.episodeByShowId.get(showId);
-    } else {
-      episodes = await fetchEpisodesForShow(showId);
-      state.episodeByShowId.set(showId, episodes);
-    }
-    state.allEpisodes = episodes;
-
-    // clean the search
-    state.searchTerm = "";
-    document.getElementById("search-input").value = "";
-    makePageForEpisodes(state.allEpisodes);
-    populateEpisodeSelector();
-    document.getElementById("episode-select").value = "";
-    statusElm.textContent = "";
-  } catch {
-    statusElm.textContent =
-      "Sorry - failed to load episodes. Please refresh the page.";
-  }
-}
-
-// level 500 plan
-//prepare the HTML structure for the view section
-// showCard function for one card
-//showCards function for all cards
-//note I must fetch and store the allShows array in state.allShows before
-//hide the episodes view and display the shows view
 
 // create show card
 
@@ -262,11 +194,7 @@ function makePageForShows(showList) {
   rootElem.append(...showCards);
 }
 
-//level 500 plan part 2
-//when the user clicks a show title
-// load that shows episodes
-// display the episodes
-//  Hide the show view show the episode view
+
 document
   .getElementById("shows-root")
   .addEventListener("click", handleShowClick);
@@ -322,12 +250,6 @@ function setupHomeButton() {
     showShowsView();
   });
 }
-
-//level 500 plan part 3
-//add search input + show count in the HTML files
-// add showSearchTerm to the state
-// create setupSowSearch
-// create  matchesShowSearch name summary and genres
 
 function matchesShowSearch(show, searchTerm) {
   const term = searchTerm.trim().toLowerCase();
